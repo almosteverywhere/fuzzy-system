@@ -9,8 +9,8 @@ class Position(models.Model):
     job_title = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
   
-    def __unicode__(self):
-        return self.position
+    def __str__(self):
+        return "%s, %s (%s)" % (self.company_name, self.job_title, self.location)
 
 class Review(models.Model):
     

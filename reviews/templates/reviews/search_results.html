@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Search results
+{% endblock %}
+
+{% block content %}
+{% if search_results %}
+    <ul>
+    {% for review in search_results %}
+        {{ review.title }}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No interview are available.</p>
+{% endif %}
+{% endblock %}

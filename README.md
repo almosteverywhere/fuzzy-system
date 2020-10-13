@@ -1,0 +1,2 @@
+# symmetrical-winner
+# fuzzy-system

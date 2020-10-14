@@ -6,6 +6,25 @@
 {% block bootstrap3_content %}
 
 <div class="container">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'index' %}">rate my tech interview</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+               <li> <a href="{% url 'index' %}">search</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'index' %}">rate an interview</a></li>
+                <li><a href="{% url 'logout' %}">logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">login</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </nav>
 
     <h1>{% block title %}(no title){% endblock %}</h1>
 

@@ -41,5 +41,5 @@ class Review(models.Model):
 
     rating = models.IntegerField(choices=RATING_CHOICES)
 
-    def __unicode__(self):
-        return self.title
+    def __str__(self):
+        return "%s (%s, %s)" % (self.title, self.position.job_title, self.position.company_name)

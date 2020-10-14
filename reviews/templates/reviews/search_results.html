@@ -8,7 +8,7 @@ Search results
 {% if search_results %}
     <ul>
     {% for review in search_results %}
-        {{ review.title }}
+        <a href="{% url 'review_detail' review.id %}">{{ review.title }}</a>
     {% endfor %}
     </ul>
 {% else %}

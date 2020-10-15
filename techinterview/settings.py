@@ -26,7 +26,7 @@ SECRET_KEY = 'i%ot6gfcko2*7z*7p1)d7981ak+yzaj&hl#e)ai7!5lzwj0slf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['secret-river-29627.herokuapp.com']
 
 
 # Application definition

@@ -9,7 +9,6 @@ Search results
     <ul>
     {% for review in search_results %}
         <li><a href="{% url 'review_detail' review.id %}">{{ review.title }}</a></li>
-        <li></li>
     {% endfor %}
     </ul>
 {% else %}

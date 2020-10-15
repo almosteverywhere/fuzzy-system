@@ -24,5 +24,8 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')), 
     path('search/', views.search, name='search'),
-    path('reviews/<int:review_id>', views.review_detail, name='review_detail')
+    path('reviews/<int:review_id>', views.review_detail, name='review_detail'),
+    path('reviews/add_review/', views.add_review, name='add_review'),
+    # should this be something else like display review?
+    path('reviews/post_review/', views.post_review, name='post_review')
 ]

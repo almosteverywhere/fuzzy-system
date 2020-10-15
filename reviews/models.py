@@ -39,7 +39,7 @@ class Review(models.Model):
     got_an_offer = models.BooleanField(default=False)
     would_recommend = models.BooleanField(default=False)
 
-    rating = models.IntegerField(choices=RATING_CHOICES)
+    rating = models.IntegerField(choices=RATING_CHOICES, help_text="rating from 1 to 5")
 
     def __str__(self):
         return "%s (%s, %s)" % (self.title, self.position.job_title, self.position.company_name)

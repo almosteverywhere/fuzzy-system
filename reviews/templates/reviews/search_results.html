@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Search results
+Search results 
 {% endblock %}
 
 {% block content %}
 {% if search_results %}
     <ul>
     {% for review in search_results %}
-        <a href="{% url 'review_detail' review.id %}">{{ review.title }}</a>
+        <li><a href="{% url 'review_detail' review.id %}">{{ review.title }}</a></li>
+        <li></li>
     {% endfor %}
     </ul>
 {% else %}

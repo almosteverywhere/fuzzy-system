@@ -58,7 +58,6 @@ def add_review(request):
 
 @login_required
 def post_review(request): 
-    import pdb; pdb.set_trace()
     form = ReviewForm(request.POST)
     if form.is_valid():
 

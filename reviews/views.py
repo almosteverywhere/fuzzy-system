@@ -5,6 +5,7 @@ from .forms import SearchForm, ReviewForm
 from .models import Review, Position
 from datetime import datetime 
 from django.urls import reverse
+import re
 from django.contrib.auth.decorators import login_required
 
 
@@ -45,7 +46,14 @@ def search(request):
 
 def review_detail(request, review_id):
     review = get_object_or_404(Review, pk=review_id)
-    context = {'review': review}
+    has_options = ['has_live_coding','has_pair_programming', 'has_take_home', 'can_meet_team', 'would_recommend'] 
+    review_options = []
+    for option in has_options:
+        if getattr(review, option):
+            option = re.sub("_", " ", option)
+            option = re.sub("has", "", option)
+            review_options.append(option)
+    context = {'review': review, 'review_options': review_options }
     return render(request, 'reviews/review_detail.html', context)
 
 
@@ -74,7 +82,7 @@ def post_review(request):
         review.position = position[0] 
         review.rating = form.cleaned_data['rating']
         review.title = form.cleaned_data['title']
-        review.commment = form.cleaned_data['comment']
+        review.comment = form.cleaned_data['comment']
         review.total_time = form.cleaned_data['total_time']
         review.total_number_interviews = form.cleaned_data['total_number_interviews']
         review.has_live_coding = form.cleaned_data['has_live_coding']

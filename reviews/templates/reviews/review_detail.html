@@ -6,30 +6,29 @@
 {% endblock %}
 
 
-
 {% block content %}
 <h4>{{ review.title }} by {{ review.user_name }}</h4>
 <p>{{ review.rating }} of 5</p>
 
 <p>{{ review.pub_date }}</p>
 
-<p>{{ review.description }}</p>
+<ul class="list-inline">
+   {% for option in review_options %}
+   <li class="text-muted"> {{option}}<li> 
+
+    {% endfor %}
+</ul>
+
+
+
+<p>{{ review.comment }}</p>
 
 <p>total time: {{ review.total_time }}</p>
 
 <p>total number of interviews: {{ review.total_number_interviews }}</p>
 
-<p>has live coding: {{ review.has_live_coding }}</p>
-
-<p>has pair programming: {{ review.has_pair_programming }}</p>
-
-<p>has take home: {{ review.has_take_home }}</p>
-
-<p>can meet team: {{ review.can_meet_team }}</p>
-
 <p>got an offer: {{ review.got_an_offer }}</p>
 
-<p>would recommend: {{ review.would_recommend }}</p>
 
 
 {% endblock %}

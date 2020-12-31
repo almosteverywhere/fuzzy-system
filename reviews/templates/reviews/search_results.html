@@ -1,16 +1,47 @@
 {% extends 'base.html' %}
+{% load bootstrap3 %}
 
 {% block title %}
 Search results 
 {% endblock %}
 
 {% block content %}
-{% if search_results %}
-    <ul>
-    {% for review in search_results %}
-        <li><a href="{% url 'review_detail' review.id %}">{{ review.title }}</a></li>
-    {% endfor %}
-    </ul>
+
+<div class="row">
+    <div class="search_filters col-md-4">
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+        <form action="{% url 'search_results' %}" method="get">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                        <button type="submit" class="btn btn-primary">
+                                {% bootstrap_icon "star" %} Submit
+                        </button>
+            {% endbuttons %}
+        </form>
+
+    </div> 
+
+
+    <div class="result col-md-8">
+        {% if search_results %}
+            <ul class='list-group'>
+            {% for review in search_results %}
+            <li class='list-group-item'>
+            {{review.rating}}: <a href="{% url 'review_detail' review.id %}">{{ review.title }}</a>
+               <p class='muted'>{{review.position}} </p>
+
+               <p>{{review.comment}}
+            </li>
+
+            {% endfor %}
+    </div>
+</div>
+
+
 {% else %}
     <p>No interview are available.</p>
 {% endif %}

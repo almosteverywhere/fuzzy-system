@@ -23,7 +23,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^accounts/', include('django.contrib.auth.urls')), 
-    path('search/', views.search, name='search'),
+    path('results/', views.search_results, name='search_results'),
     path('reviews/<int:review_id>', views.review_detail, name='review_detail'),
     path('reviews/add_review/', views.add_review, name='add_review'),
     # should this be something else like display review?

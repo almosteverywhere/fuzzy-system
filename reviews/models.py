@@ -31,8 +31,9 @@ class Review(models.Model):
     pub_date = models.DateTimeField()
     
     total_time = models.IntegerField(null=True)
+    # probably we want these to default to be nothing vs. false 
     total_number_interviews = models.IntegerField(null=True)
-    has_live_coding = models.BooleanField(default=False)
+    has_live_coding = models.BooleanField(null=True)
     has_pair_programming = models.BooleanField(default=False)
     has_take_home = models.BooleanField(default=False)
     can_meet_team = models.BooleanField(default=False)

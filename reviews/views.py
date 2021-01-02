@@ -24,58 +24,77 @@ def index(request):
 
 def search_results(request):
 
-    # now we also want to post the results of that other form here,
-    # how will this work? 
-    # is this a form with only part of the request for each one?
-
-    # form = SearchResultForm(request.GET or None, instance=instance, request=request)
-    ####
-    # initial = {'has_live_coding': True} 
-    # import pdb; pdb.set_trace()
-    # if len(request.GET):
-    #     form = SearchResultsForm(request.GET)       # bind the form
-    # else:
-    #     form = SearchResultsForm(initial=initial)   # if GET is empty, use default form
-
-    ####
-
     form = SearchResultsForm(request.GET or None)
     if form.is_valid():
         company = form.cleaned_data['company']
         job_title = form.cleaned_data['job_title']
         location = form.cleaned_data['location']
         
-        # choices should be yes/no/any with a default value of any 
-        has_live_coding_select =  form.cleaned_data['has_live_coding']
         has_live_coding = None 
-
-
-        if has_live_coding_select == 'True':
+        has_pair_programming = None
+        has_take_home = None  
+        can_meet_team = None
+        got_an_offer = None 
+        would_recommend = None 
+        
+        if form.cleaned_data['has_live_coding'] == True: 
             has_live_coding = Q(has_live_coding=True)
-        if has_live_coding_select == 'False': 
-            # exclude, this has some logic issue as it could be that
-            # people just don't specify that field vs. it never has live coding
-            has_live_coding = ~Q(has_live_coding=True)
-        # there's gotta be a better way to express this for every criteria
-        # has_pair_programming_form =  form.cleaned_data['has_pair_programming'] 
-        # if has_pair_programming_form == True:
-        #     has_pair_programming = Q(has_pair_programming=True)
-        # if has_pair_programming_form == False: 
-        #     has_pair_programming = ~Q(has_pair_programming=True)
+        if form.cleaned_data['has_live_coding'] == False: 
+            has_live_coding = Q(has_live_coding=False)
+
+        # should false here be false or just not true 
+        if form.cleaned_data['has_pair_programming'] == True:
+            has_pair_programming = Q(has_pair_programming=True) 
+        if form.cleaned_data['has_pair_programming'] == False:
+            has_pair_programming = Q(has_pair_programming=False) 
+
+        if form.cleaned_data['has_take_home'] == True:
+            has_take_home = Q(has_take_home=True) 
+        if form.cleaned_data['has_take_home'] == False:
+            has_take_home = Q(has_take_home=False)
+
+        if form.cleaned_data['has_take_home'] == True:
+            has_take_home = Q(has_take_home=True) 
+        if form.cleaned_data['has_take_home'] == False:
+            has_take_home = Q(has_take_home=False)
+
+        if form.cleaned_data['can_meet_team'] == True:
+            can_meet_team = Q(can_meet_team=True) 
+        if form.cleaned_data['can_meet_team'] == False:
+            can_meet_team = Q(can_meet_team=False) 
+
+        if form.cleaned_data['got_an_offer'] == True:
+            got_an_offer = Q(got_an_offer=True) 
+        if form.cleaned_data['got_an_offer'] == False:
+            got_an_offer = Q(got_an_offer=False) 
+
+        if form.cleaned_data['would_recommend'] == True:
+            would_recommend = Q(would_recommend=True) 
+        if form.cleaned_data['would_recommend'] == False:
+            would_recommend = Q(would_recommend=False) 
+
 
         basic = Q(position__job_title__icontains=job_title) & \
                 Q(position__company_name__icontains=company) &\
                 Q(position__location__icontains=location)
 
 
-        # can_i_haz = has_live_coding 
         all_criteria = basic 
 
         if has_live_coding: 
-
             all_criteria = all_criteria & has_live_coding
+        if has_pair_programming:
+            all_criteria = all_criteria & has_pair_programming
+        if has_take_home:
+            all_criteria = all_criteria & has_take_home
+        if can_meet_team: 
+            all_criteria = all_criteria & can_meet_team
+        if got_an_offer: 
+            all_criteria = all_criteria & got_an_offer
+        if would_recommend:
+            all_criteria = all_criteria & would_recommend
 
-
+        
         search_results = Review.objects.filter(all_criteria)
     
 
@@ -88,6 +107,7 @@ def search_results(request):
         # should this go to a url called search results instead? 
         return HttpResponse(template.render(context, request))
 
+    # FIXME: this should return something even if form is not valid 
     # # this should be different i think 
     # return render(request, 'index.html', context={'form':form})
 

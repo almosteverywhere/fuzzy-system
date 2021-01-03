@@ -8,12 +8,22 @@ CHOICES=[("All", "All"),
          ]
 
 # should we just give a number? 
-# MAX_NUM_INTERVIEWS_CHOICES = [("All", "All"),
-#         ((1), "1"),
-#         ((2), "2"),
-#         (3,5), "3-5",
-#         5-7, "5-7",
-#         7+]
+MAX_TOTAL_INTERVIEW_CHOICES = [
+        (None, "All"),
+        (2, "1-2"),
+        (4, "3-4"),
+        (7, "5-7"),
+        (None, "7+")
+        ]
+
+MAX_TOTAL_TIME = [
+        (None, "All"),
+        (3, "1-3 hours"),
+        (6, "4-6 hours"),
+        (10, "6-10 hours"),
+        (15, "11-15 hours"),
+        (None, "16+"),
+        ]
 
 
 class SearchResultsForm(forms.Form):
@@ -23,7 +33,7 @@ class SearchResultsForm(forms.Form):
     # this should be by buckets 
     max_total_time = forms.IntegerField(required=False)
     # this should also be by buckets
-    max_total_number_interviews = forms.IntegerField(required=False)
+    max_total_interviews = forms.IntegerField(required=False)
     # they should allow searching by yes/no/don't care 
     has_live_coding = forms.NullBooleanField(required=False, label="Has live coding")
     has_pair_programming = forms.NullBooleanField(required=False)
@@ -42,6 +52,8 @@ class SearchResultsForm(forms.Form):
         self.fields['location'].widget = forms.HiddenInput()
         # OK THIS IS FUCKED HOW TO SET A DEFAULT OPTION BC IF YOU SUBMIT THE Form
         # WITH NOTHING IT CONSIDERS IT FALSE BY DEFALUT 
+        self.fields['max_total_interviews'].widget = forms.Select(choices=MAX_TOTAL_INTERVIEW_CHOICES)
+        self.fields['max_total_time'].widget = forms.Select(choices=MAX_TOTAL_TIME)
         self.fields['has_live_coding'].widget = forms.RadioSelect(choices=CHOICES)
         self.fields['has_pair_programming'].widget = forms.RadioSelect(choices=CHOICES)
         self.fields['has_take_home'].widget = forms.RadioSelect(choices=CHOICES)

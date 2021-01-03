@@ -10,6 +10,7 @@ import re
 from django.contrib.auth.decorators import login_required
 
 
+# FIXME: do we want these to be sub filters or just all filters
 
 # Create your views here.
 
@@ -23,12 +24,15 @@ def index(request):
    
 
 def search_results(request):
+    # FIXME: make unit tests for the logic of this and also 
+    # simplify it 
 
     form = SearchResultsForm(request.GET or None)
     if form.is_valid():
         company = form.cleaned_data['company']
         job_title = form.cleaned_data['job_title']
         location = form.cleaned_data['location']
+
         
         has_live_coding = None 
         has_pair_programming = None
@@ -36,6 +40,8 @@ def search_results(request):
         can_meet_team = None
         got_an_offer = None 
         would_recommend = None 
+        max_total_interviews = None 
+        max_total_time = None 
         
         if form.cleaned_data['has_live_coding'] == True: 
             has_live_coding = Q(has_live_coding=True)
@@ -73,6 +79,16 @@ def search_results(request):
         if form.cleaned_data['would_recommend'] == False:
             would_recommend = Q(would_recommend=False) 
 
+        # has value of None if not important
+        mte = form.cleaned_data['max_total_interviews']
+        if mte: 
+            max_total_interviews = Q(total_number_interviews__lte=mte)
+
+        # FIXME: check boundary conditions 
+        mtt = form.cleaned_data['max_total_time']
+        if mtt:
+            max_total_time = Q(total_time__lte=mtt)
+
 
         basic = Q(position__job_title__icontains=job_title) & \
                 Q(position__company_name__icontains=company) &\
@@ -93,7 +109,10 @@ def search_results(request):
             all_criteria = all_criteria & got_an_offer
         if would_recommend:
             all_criteria = all_criteria & would_recommend
-
+        if max_total_interviews:
+            all_criteria = all_criteria & max_total_interviews
+        if max_total_time:
+            all_criteria = all_criteria & max_total_time
         
         search_results = Review.objects.filter(all_criteria)
     
@@ -104,7 +123,7 @@ def search_results(request):
             }
         template = loader.get_template('reviews/search_results.html')
 
-        # should this go to a url called search results instead? 
+        
         return HttpResponse(template.render(context, request))
 
     # FIXME: this should return something even if form is not valid 

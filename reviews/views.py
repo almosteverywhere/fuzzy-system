@@ -42,6 +42,7 @@ def search_results(request):
         would_recommend = None 
         max_total_interviews = None 
         max_total_time = None 
+        rating = None 
         
         if form.cleaned_data['has_live_coding'] == True: 
             has_live_coding = Q(has_live_coding=True)
@@ -89,6 +90,11 @@ def search_results(request):
         if mtt:
             max_total_time = Q(total_time__lte=mtt)
 
+        rt = form.cleaned_data['rating']
+        if rt:
+            rating = Q(rating=rt)
+
+
 
         basic = Q(position__job_title__icontains=job_title) & \
                 Q(position__company_name__icontains=company) &\
@@ -113,6 +119,8 @@ def search_results(request):
             all_criteria = all_criteria & max_total_interviews
         if max_total_time:
             all_criteria = all_criteria & max_total_time
+        if rating:
+            all_criteria = all_criteria & rating
         
         search_results = Review.objects.filter(all_criteria)
     

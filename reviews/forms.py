@@ -7,6 +7,16 @@ CHOICES=[("All", "All"),
          (False,'No'),
          ]
 
+RATINGS=[(None, "All"), 
+        (1,1),
+         (2, 2),
+         (3,3),
+         (4,4),
+         (5,5)
+         ]
+
+
+
 # should we just give a number? 
 MAX_TOTAL_INTERVIEW_CHOICES = [
         (None, "All"),
@@ -30,10 +40,11 @@ class SearchResultsForm(forms.Form):
     company = forms.CharField(label='Company', max_length=100, required=False)
     job_title = forms.CharField(label='Job title', max_length=100, required=False)
     location = forms.CharField(label='Location', max_length=100, required=False)
-    # this should be by buckets 
+    
     max_total_time = forms.IntegerField(required=False)
     # this should also be by buckets
     max_total_interviews = forms.IntegerField(required=False)
+    rating = forms.IntegerField(label="Rating", required=False)
     # they should allow searching by yes/no/don't care 
     has_live_coding = forms.NullBooleanField(required=False, label="Has live coding")
     has_pair_programming = forms.NullBooleanField(required=False)
@@ -54,6 +65,7 @@ class SearchResultsForm(forms.Form):
         # WITH NOTHING IT CONSIDERS IT FALSE BY DEFALUT 
         self.fields['max_total_interviews'].widget = forms.Select(choices=MAX_TOTAL_INTERVIEW_CHOICES)
         self.fields['max_total_time'].widget = forms.Select(choices=MAX_TOTAL_TIME)
+        self.fields['rating'].widget = forms.Select(choices=RATINGS)
         self.fields['has_live_coding'].widget = forms.RadioSelect(choices=CHOICES)
         self.fields['has_pair_programming'].widget = forms.RadioSelect(choices=CHOICES)
         self.fields['has_take_home'].widget = forms.RadioSelect(choices=CHOICES)
@@ -107,10 +119,4 @@ class ReviewForm(forms.ModelForm):
 class ReviewFilterForm(forms.Form):
      def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    
-    
-
-
-    
-       
+      
